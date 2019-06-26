@@ -1,9 +1,11 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { ReadsSampler } from "./ReadsSampler";
+import { DeBrujinGraphNodeCreator } from "./DeBrujinGraphNodeCreator";
 
 const flexStyle = { display: "flex" as const, flexDirection: "column" as const };
 
 const App: React.FunctionComponent = () => {
+  const [overlapSize, setOverlapSize] = useState(8);
   const [message, setMessage] = useState(
     "u9reng9uh2349827thgjaiuen0s87w34oq984q374hqagh88a7q2h4tbwfejhdv98w5obawhjszdxgv98b4ahsuzy98deo4bh3yZ8gdvsbeh4ayoszidxbvsdhea8ozzkhjdve83oaiubawoeeehdbaiwbvebhzxcvbzxvkbaeagug2478e7828484gewfbasdvvvvbcnmxvkzjsdaugehwo4837oawiyegszdbhczjvsadiewhqoq4alewzsschj"
   );
@@ -22,11 +24,19 @@ const App: React.FunctionComponent = () => {
   }, [setMessage]);
 
   const reads = useMemo(() => {
-    return new ReadsSampler(message).createReads();
-  }, [message]);
+    return new ReadsSampler(message).createReads(overlapSize);
+  }, [message, overlapSize]);
+
+  const graphNodes = useMemo(() => {
+    return new DeBrujinGraphNodeCreator(reads).createNodes(Math.floor(overlapSize / 2));
+  }, [reads, overlapSize]);
 
   return (
     <div className="App">
+      <div style={flexStyle}>
+        <label>read overlap size</label>
+        <input type="number" value={overlapSize} onChange={e => setOverlapSize(Number(e.target.value))}/>
+      </div>
       <div style={flexStyle}>
         <label>input alphabets</label>
         <textarea
@@ -43,6 +53,15 @@ const App: React.FunctionComponent = () => {
           disabled={true}
           rows={30}
           value={reads.join("\n")}
+        />
+      </div>
+
+      <div style={flexStyle}>
+        <label>de-Bruijn graph nodes</label>
+        <textarea
+          disabled={true}
+          rows={30}
+          value={graphNodes.map(nodes => nodes.join(" => ")).join("\n")}
         />
       </div>
 
