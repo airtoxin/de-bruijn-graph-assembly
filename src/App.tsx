@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { ReadsSampler } from "./ReadsSampler";
-import { DeBrujinGraphNodeCreator } from "./DeBrujinGraphNodeCreator";
+import { ReadsSampler } from "./logics/ReadsSampler";
+import { DeBrujinGraphNodeCreator } from "./logics/DeBrujinGraphNodeCreator";
 import eulerianTrail from "eulerian-trail";
 
 const flexStyle = {
