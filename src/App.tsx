@@ -1,8 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { ReadsSampler } from "./ReadsSampler";
 import { DeBrujinGraphNodeCreator } from "./DeBrujinGraphNodeCreator";
+import eulerianTrail from "eulerian-trail";
 
-const flexStyle = { display: "flex" as const, flexDirection: "column" as const };
+const flexStyle = {
+  display: "flex" as const,
+  flexDirection: "column" as const
+};
 
 const App: React.FunctionComponent = () => {
   const [overlapSize, setOverlapSize] = useState(8);
@@ -28,19 +32,31 @@ const App: React.FunctionComponent = () => {
   }, [message, overlapSize]);
 
   const graphNodes = useMemo(() => {
-    return new DeBrujinGraphNodeCreator(reads).createNodes(Math.floor(overlapSize / 2));
+    return new DeBrujinGraphNodeCreator(reads).createNodes(
+      Math.floor(overlapSize / 2)
+    );
   }, [reads, overlapSize]);
+
+  const assembledMessage = useMemo(() => {
+    return eulerianTrail({
+      edges: graphNodes
+    }).join("");
+  }, [graphNodes]);
 
   return (
     <div className="App">
       <div style={flexStyle}>
         <label>read overlap size</label>
-        <input type="number" value={overlapSize} onChange={e => setOverlapSize(Number(e.target.value))}/>
+        <input
+          type="number"
+          value={overlapSize}
+          onChange={e => setOverlapSize(Number(e.target.value))}
+        />
       </div>
       <div style={flexStyle}>
         <label>input alphabets</label>
         <textarea
-          rows={30}
+          rows={10}
           value={message}
           onChange={e => setMessage(e.target.value)}
         />
@@ -49,25 +65,21 @@ const App: React.FunctionComponent = () => {
 
       <div style={flexStyle}>
         <label>reads</label>
-        <textarea
-          disabled={true}
-          rows={30}
-          value={reads.join("\n")}
-        />
+        <textarea disabled={true} rows={10} value={reads.join("\n")} />
       </div>
 
       <div style={flexStyle}>
         <label>de-Bruijn graph nodes</label>
         <textarea
           disabled={true}
-          rows={30}
+          rows={10}
           value={graphNodes.map(nodes => nodes.join(" => ")).join("\n")}
         />
       </div>
 
       <div style={flexStyle}>
         <label>assembled reads</label>
-        <textarea disabled={true} cols={10} />
+        <textarea disabled={true} rows={10} value={assembledMessage} />
       </div>
     </div>
   );
