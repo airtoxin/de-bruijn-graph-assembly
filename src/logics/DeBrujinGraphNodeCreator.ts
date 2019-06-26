@@ -1,3 +1,5 @@
+import {splitByIndex, splitByIndexLeft} from "./utils";
+
 export type GraphNode = [string, string];
 
 export class DeBrujinGraphNodeCreator {
@@ -9,19 +11,25 @@ export class DeBrujinGraphNodeCreator {
       const tails = [];
 
       let seq = sequence;
+      // "oq984q37 4hq"
       while (1) {
-        const head = seq.slice(0, nodeSize);
-        const remains = seq.slice(nodeSize, seq.length - nodeSize);
-        const tail = seq.slice(seq.length - nodeSize);
-
-        heads.push(head);
-        tails.unshift(tail);
-        if (remains.length < nodeSize * 2) {
-          if (remains) heads.push(remains);
+        if (seq.length < nodeSize) {
+          if (seq) heads.push(seq);
           break;
-        } else {
-          seq = remains;
         }
+
+        const [head, headRemains] = splitByIndex(seq, nodeSize);
+        heads.push(head);
+
+        if (headRemains.length < nodeSize) {
+          heads.push(headRemains);
+          break;
+        }
+        const [remains, tail] = splitByIndexLeft(headRemains, nodeSize);
+
+        tails.push(tail);
+
+        seq = remains;
       }
 
       return [

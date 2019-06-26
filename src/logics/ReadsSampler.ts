@@ -1,4 +1,4 @@
-import {splitByIndex, splitByIndexLeft} from "./utils";
+import {shuffle, splitByIndex, splitByIndexLeft} from "./utils";
 
 const defaultRandomizer: typeof Math.random = () => Math.random() * 15;
 
@@ -21,6 +21,6 @@ export class ReadsSampler {
       const [_, overlappingSequence] = splitByIndexLeft(read, overlap);
       unreadSequence = overlappingSequence + remains;
     }
-    return reads;
+    return shuffle(reads);
   }
 }
