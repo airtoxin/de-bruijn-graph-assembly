@@ -40,7 +40,7 @@ const App: React.FunctionComponent = () => {
   const assembledMessage = useMemo(() => {
     return eulerianTrail({
       edges: graphNodes
-    }).join("");
+    }).reverse().join("");
   }, [graphNodes]);
 
   return (
