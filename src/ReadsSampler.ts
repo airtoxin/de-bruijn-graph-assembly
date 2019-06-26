@@ -1,12 +1,12 @@
 export class ReadsSampler {
   constructor(private sequence: string) {}
 
-  createReads(overlap: number = 5): string[] {
+  createReads(overlap: number): string[] {
     const reads: string[] = [];
 
     let unreadSequence = this.sequence;
     while (1) {
-      const size = overlap + Math.floor(Math.random() * 15);
+      const size = overlap + overlap + Math.floor(Math.random() * 15);
       const read = unreadSequence.slice(0, size);
       reads.push(read);
 

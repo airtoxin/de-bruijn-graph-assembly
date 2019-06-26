@@ -32,9 +32,7 @@ const App: React.FunctionComponent = () => {
   }, [message, overlapSize]);
 
   const graphNodes = useMemo(() => {
-    return new DeBrujinGraphNodeCreator(reads).createNodes(
-      Math.floor(overlapSize / 2)
-    );
+    return new DeBrujinGraphNodeCreator(reads).createNodes(overlapSize);
   }, [reads, overlapSize]);
 
   const assembledMessage = useMemo(() => {
