@@ -1,6 +1,8 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { ReadsSampler } from "./ReadsSampler";
 
+const flexStyle = { display: "flex" as const, flexDirection: "column" as const };
+
 const App: React.FunctionComponent = () => {
   const [message, setMessage] = useState(
     "u9reng9uh2349827thgjaiuen0s87w34oq984q374hqagh88a7q2h4tbwfejhdv98w5obawhjszdxgv98b4ahsuzy98deo4bh3yZ8gdvsbeh4ayoszidxbvsdhea8ozzkhjdve83oaiubawoeeehdbaiwbvebhzxcvbzxvkbaeagug2478e7828484gewfbasdvvvvbcnmxvkzjsdaugehwo4837oawiyegszdbhczjvsadiewhqoq4alewzsschj"
@@ -25,22 +27,26 @@ const App: React.FunctionComponent = () => {
 
   return (
     <div className="App">
-      <div>
+      <div style={flexStyle}>
         <label>input alphabets</label>
         <textarea
-          cols={10}
+          rows={30}
           value={message}
           onChange={e => setMessage(e.target.value)}
         />
         <button onClick={setRandomMessage}>Generate random</button>
       </div>
 
-      <div>
+      <div style={flexStyle}>
         <label>reads</label>
-        <textarea disabled={true} cols={10} value={reads.join("\n")} />
+        <textarea
+          disabled={true}
+          rows={30}
+          value={reads.join("\n")}
+        />
       </div>
 
-      <div>
+      <div style={flexStyle}>
         <label>assembled reads</label>
         <textarea disabled={true} cols={10} />
       </div>
