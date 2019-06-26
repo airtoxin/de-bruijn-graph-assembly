@@ -1,22 +1,25 @@
+import {splitByIndex, splitByIndexLeft} from "./utils";
+
+const defaultRandomizer: typeof Math.random = () => Math.random() * 15;
+
 export class ReadsSampler {
-  constructor(private sequence: string) {}
+  constructor(private sequence: string, private random: typeof Math.random = defaultRandomizer) {}
 
   createReads(overlap: number): string[] {
     const reads: string[] = [];
 
     let unreadSequence = this.sequence;
     while (1) {
-      const size = overlap + overlap + Math.floor(Math.random() * 15);
-      const read = unreadSequence.slice(0, size);
-      reads.push(read);
-
-      const overlapSequence = read.slice(read.length - overlap, read.length);
-      unreadSequence = overlapSequence + unreadSequence.slice(size);
-
-      if (unreadSequence.length < overlap * 2) {
+      const readSize = overlap * 2 + Math.floor(this.random());
+      if (unreadSequence.length <= readSize) {
         reads.push(unreadSequence);
         break;
       }
+      const [read, remains] = splitByIndex(unreadSequence, readSize);
+      reads.push(read);
+
+      const [_, overlappingSequence] = splitByIndexLeft(read, overlap);
+      unreadSequence = overlappingSequence + remains;
     }
     return reads;
   }
